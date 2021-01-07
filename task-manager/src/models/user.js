@@ -1,11 +1,11 @@
 const mongoose = require("mongoose")
 const validator = require("validator")
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 
-mongoose.connect("mongodb://127.0.0.1:27017/task-manager-api", {
+mongoose.connect("mongodb+srv://jarmo:cred-maut9NUMP4cunk@remote-work.xrt8l.mongodb.net/test", {
     useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopolgy: true,
+    useCreateIndex: true
 })
 
 const userSchema = new mongoose.Schema({
@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
+        unique: true,
         trim: true,
         lowercase: true,
         validate(value) {
@@ -44,9 +45,42 @@ const userSchema = new mongoose.Schema({
                 throw new Error("Password cant contain the word password")
             }
         }
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            required: true,
+        }
+    }]
 })
 
+userSchema.statics.findByCredentials = async (email, password) => {
+    const user = await User.findOne({ email })
+
+    if(!user) {
+        throw new Error("Unable to login")
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password)
+
+    if(!isMatch) {
+        throw new Error("Unable to login")
+    }
+
+    return user;
+}
+
+userSchema.methods.generateAuthToken = async function() {
+    const user = this;
+    const token = jwt.sign({ _id: user._id.toString() }, "thisismynewcourse")
+
+    user.tokens = user.tokens.concat({ token })
+    await user.save()
+
+    return token
+}
+
+// Hash the plain text password before saving
 userSchema.pre("save", async function (next) {
     const user = this
 

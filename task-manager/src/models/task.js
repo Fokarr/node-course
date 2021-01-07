@@ -1,10 +1,9 @@
 const mongoose = require("mongoose")
 const bcrypt = require("bcryptjs")
 
-mongoose.connect("mongodb://127.0.0.1:27017/task-manager-api", {
+mongoose.connect("mongodb+srv://jarmo:cred-maut9NUMP4cunk@remote-work.xrt8l.mongodb.net/test", {
     useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopolgy: true,
+    useCreateIndex: true
 })
 
 const Task = mongoose.model("Task", {

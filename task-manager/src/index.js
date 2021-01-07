@@ -1,4 +1,5 @@
 const express = require("express");
+const chalk = require("chalk");
 const userRouter = require("./routers/user")
 const taskRouter = require("./routers/task")
 require("mongoose");
@@ -13,12 +14,12 @@ app.use(userRouter)
 app.use(taskRouter)
 
 app.listen(port, () => {
-    console.log("Server is up on port")
+    console.log(chalk.green("Server is running on Port:" + port))
 })
 
 const bcrypt = require("bcryptjs");
 
-const myFunction = async () => {
+/*const myFunction = async () => {
     const password = "Red12345!"
     const hashedPassword = await bcrypt.hash(password, 8)
 
@@ -30,3 +31,17 @@ const myFunction = async () => {
 }
 
 myFunction()
+*/
+
+/*const jwt = require("jsonwebtoken")
+
+const myFunction = async () => {
+    const token = jwt.sign({ _id: "abc123" }, "thisismynewcourse", {expiresIn: "7 days"})
+    console.log(token)
+
+    const data = jwt.verify(token, "thisismynewcourse");
+    console.log(data)
+}
+
+myFunction()
+*/
