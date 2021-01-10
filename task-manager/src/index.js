@@ -9,9 +9,24 @@ const Task = require("./models/task")
 const app = express();
 const port = process.env.PORT || 3000
 
+/*app.use((req, res, next) => {
+    if(req.method === "GET") {
+        res.send("GET requests are disabled")
+    } else {
+        next()
+    }
+})*/
+
+// Middleware Function
+/*app.use((req, res, next) => {
+    res.status(503).send("Website is currently down. Check back soon!")
+})*/
+
 app.use(express.json())
 app.use(userRouter)
 app.use(taskRouter)
+
+
 
 app.listen(port, () => {
     console.log(chalk.green("Server is running on Port:" + port))
