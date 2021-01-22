@@ -15,6 +15,10 @@ router.post("/users", async (req, res) => {
     }
 })
 
+router.get("/users/me", auth, (req, res) => {
+    console.log(req);
+    res.send(req.user);
+})
 
 router.get("/users/:id", async (req, res) => {
     const _id = req.params.id
@@ -28,11 +32,6 @@ router.get("/users/:id", async (req, res) => {
     } catch(e) {
         res.status(500).send(e)
     }
-})
-
-router.get("/me", auth, (req, res) => {
-    console.log("Damn");
-    res.send(req.user);
 })
 
 router.post("/users/login", async (req, res) => {
